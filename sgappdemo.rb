@@ -10,16 +10,8 @@ class Sgappdemo < Formula
     depends_on "go" => :build
     
     def install
-        arch = nil
-        os = 'darwin'
-        if RUBY_PLATFORM.index('darwin') != nil
-            is_x86 = RUBY_PLATFORM.index("x86")
-            if is_x86 != nil
-                arch = 'x64'
-            else
-                arch = 'arm64'
-            end
-        end
+        os = OS.kernel_name.downcase
+        arch = Hardware::CPU.intel? ? "amd64" : "arm64"
         ENV["GOARCH"] = "#{arch}"
         ENV["ENTERPRISE"] = "1"
         ENV["DEV_WEB_BUILDER"] = "esbuild yarn run build-web"
